@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>带缩略图的图片转换</title>
+		<style type="text/css">
+			body,div,ul,li,ol,p,h1,h2,h3,h4,h5,h6,button,input,textarea{
+				margin: 0;
+				padding: 0;
+			}
+			li{
+				list-style: none;
+			}
+			img{
+				display: block;
+				border: 0;
+			}
+			h2{
+				text-align: center;
+			}
+			.banner{
+				position: relative;
+				width: 100%;
+				min-width: 1200px;
+				height: 600px;
+				padding-bottom: 70px;
+				background: #e5e5e5;
+				overflow: hidden;
+				cursor: pointer;
+			}
+			.pic-list{
+				height: auto;
+				margin: 20px;
+				overflow: hidden;
+			}
+			.pic-list li{
+				display: none;
+				width: 100%;
+				height: auto;
+				overflow: hidden;
+				text-align: center;
+			}
+			.pic-list li.current{
+				display: block;
+			}
+			.pic-list li.current img{
+				width: 1920px;
+				height: 600px;
+				text-align: center;
+			}
+			.focus{
+				position: absolute;
+				height: 20px;
+				left: 50%;
+				transform: translateX(-50%);
+				bottom: 5px;
+				z-index: 10;
+			}
+			.focus li{
+				position: relative;
+				float: left;
+				width: 20px;
+				height: 20px;
+				margin: 0 8px;
+				background: #94a59c;
+				border-radius: 10px;
+			}
+			.focus li.current{
+				background: #efbd00;
+			}
+			.focus li .thumb-img{
+				display: none;
+				position: absolute;
+				left: -92px;
+				top: -80px;
+				width: 192px;
+				height: 60px;
+				padding: 6px;
+				background: #fff;
+			}
+			.focus li .thumb-img:after{
+				content: "";
+				position: absolute;
+				left: 93px;
+			    top: 70px;
+			    width: 17px;
+			    height: 10px;
+				background: url(testImg/down.png) no-repeat;
+			}
+			.focus li:hover .thumb-img{
+				display: block;
+			}
+			.focus li .thumb-img img{
+				width: 100%;
+			}
+			.btn{
+				position: absolute;
+				top: 50%;
+				transform: translateY(-50%);
+			}
+			.left{
+				left: 50px;
+			}
+			.right{
+				right: 50px;
+			}
+		</style>
+	</head>
+	<body>
+		<h2>带缩略图的图片转换</h2>
+		<!--banner开始-->
+		<div class="banner" id="banner">
+			<ul class="pic-list" id="pic-list">
+				<li class="current"><a href="javascript:;"><img src="testImg/banner1.jpg" alt="img1" /></a></li>
+				<li><a href="javascript:;"><img src="testImg/banner2.jpg" alt="testImg" /></a></li>
+				<li><a href="javascript:;"><img src="testImg/banner3.jpg" alt="img3" /></a></li>
+				<li><a href="javascript:;"><img src="testImg/banner4.jpg" alt="img4" /></a></li>
+				<li><a href="javascript:;"><img src="testImg/banner5.jpg" alt="img5" /></a></li>
+			</ul>
+			<ul class="focus" id="focus">
+				<li class="current">
+					<div class="thumb-img"><img src="testImg/banner1.jpg" alt="img1" /></div>
+				</li>
+				<li>
+					<div class="thumb-img"><img src="testImg/banner2.jpg" alt="testImg" /></div>
+				</li>
+				<li>
+					<div class="thumb-img"><img src="testImg/banner3.jpg" alt="img3" /></div>
+				</li>
+				<li>
+					<div class="thumb-img"><img src="testImg/banner4.jpg" alt="img4" /></div>
+				</li>
+				<li>
+					<div class="thumb-img"><img src="testImg/banner5.jpg" alt="img5" /></div>
+				</li>
+			</ul>
+			<div class="btn left" id="left"><img src="testImg/prev.png" alt="prev"/></div>
+			<div class="btn right" id="right"><img src="testImg/next.png" alt="next"/></div>
+		</div>
+		<!--banner结束-->
+		<script type="text/javascript">
+			//定义一个变量用来获取banner图片列表
+			var banner = document.getElementById("banner");
+			var piclist = document.getElementById("pic-list").getElementsByTagName("li");
+			var focuslist = document.getElementById("focus").getElementsByTagName("li");
+			var oleft = document.getElementById("left");
+			var oright = document.getElementById("right");
+			
+			//默认banner图对应的下标是0
+			var i=0;//定义一个初始值，用来保存列表的下标
+			
+			//点击右边的按钮向下切换图片
+			oright.onclick = next;
+			
+			//定义一个向下切换banner图片的函数
+			function next(){
+				i++;
+				if(i>=piclist.length){
+					i=0;
+				}
+				setBanner();
+			}
+			
+			oleft.onclick = prev;
+			
+			//定义一个函数用来向上切换banner图
+			function prev(){
+				i--;
+				if(i<0){
+					i=piclist.length-1;
+				}
+				setBanner();
+			}
+			
+			
+			function setBanner(){
+				for(pic in piclist){
+					piclist.item(pic).className = "";
+				}
+				for(foc in focuslist){
+					focuslist.item(foc).className = "";
+				}
+				piclist.item(i).className = "current";
+				focuslist.item(i).className = "current";
+			}
+			//mouseover()鼠标移动到目标元素的事件  mouseout()鼠标离开目标元素的事件
+			for(focc=0;focc<focuslist.length;focc++){
+				focuslist.item(focc).index=focc;
+				focuslist.item(focc).onclick = function(){
+					console.log(this.index);
+					i=this.index;
+					setBanner();
+				}
+			}
+			
+			//自动播放周期函数 setInterval(函数名,时间单位是毫秒)
+			var timer=setInterval(next,2000)
+			
+			//清除自动播放周期函数 clearInterval(自动播放函数名)
+			banner.onmouseover = function(){
+				clearInterval(timer)
+			}
+			
+			banner.onmouseout = function(){
+				timer=setInterval(next,2000);
+			}
+
+		</script>
+	</body>
+</html>
