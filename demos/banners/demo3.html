@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>使用position属性做出来的banner(无缝轮播图)</title>
+		<style type="text/css">
+			body{
+				overflow: hidden;
+			}
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			li{
+				list-style: none;
+			}
+			a{
+				text-decoration: none;
+			}
+			.banner{
+				width: 450px;
+				height: 300px;
+				margin: 30px auto;
+				border: 1px solid #999;
+			}
+			.banner .container{
+				position: relative;
+				width: 100%;
+				height: 100%;
+				background: #e5e5e5;
+				overflow: hidden;
+			}
+			.banner .container .btn{
+				width: 100%;
+				height: 100%;
+			}
+			.banner .container .btn a{
+				position: absolute;
+				top: 50%;
+				width: 30px;
+				height: 46px;
+				margin-top: -23px;
+				font-size: 30px;
+				line-height: 40px;
+				color: #eee;
+				text-align: center;
+				background: rgba(50,50,50,.5);
+				z-index: 9999;
+			}
+			.banner .container .btn a:hover{
+				background: rgba(50,50,50,.7);
+			}
+			#bprev{
+				left: 10px;
+			}
+			#bnext{
+				right: 10px;
+			}
+			#imgList{
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 2250px;
+				height: 100%;
+				transition: 1s;
+			}
+			#imgList li{
+				float: left;
+				width: 450px;
+				height: 100%;
+			}
+			#imgList li img{
+				width:100%;
+				height:100%;
+				vertical-align: top;
+			}
+			#focusList{
+				position: absolute;
+				left:50%;
+				bottom:10px;
+				margin-left: -52px;
+				z-index: 9999;
+			}
+			#focusList span{
+				float: left;
+				width: 16px;
+				height: 16px;
+				margin: 0 5px;
+				border-radius: 50%;
+				background: #E5E5E5;
+			}
+			#focusList span:hover{
+				background: #f60;
+			}
+			#focusList .active{
+				background: #f60;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="banner">
+			<div class="container">
+				<div class="btn">
+					<a id="bprev" href="javascript:;">&lt;</a>
+					<a id="bnext" href="javascript:;">&gt;</a>
+				</div>
+				<ul id="imgList">
+					<li>
+						<a href="javascript:;">
+							<img src="img/1.png" alt="" />
+						</a>
+					</li>
+					<li>
+						<a href="javascript:;">
+							<img src="img/2.png" alt="" />
+						</a>
+					</li>
+					<li>
+						<a href="javascript:;">
+							<img src="img/3.png" alt="" />
+						</a>
+					</li>
+					<li>
+						<a href="javascript:;">
+							<img src="img/4.png" alt="" />
+						</a>
+					</li>
+					<li>
+						<a href="javascript:;">
+							<img src="img/1.png" alt="" />
+						</a>
+					</li>
+				</ul>
+				<div id="focusList">
+					<span class="active"></span>
+					<span></span>
+					<span></span>
+					<span></span>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			var bprev = document.getElementById("bprev");
+			var bnext = document.getElementById("bnext");
+			var imgUl = document.getElementById("imgList");
+			var imgList = imgUl.getElementsByTagName("li");
+			var focusList = document.getElementById("focusList").getElementsByTagName("span");
+			var num = 0;
+			
+			bprev.onclick = function(){
+				num++;
+				if(num > 0){
+					num = -imgList.length+1;
+					imgUl.style.transition = "none";
+					
+					setTimeout(function(){
+						num = -imgList.length+2;
+						imgUl.style.transition = "1s";
+						imgUl.style.left = num*imgList[0].offsetWidth + "px";
+						setFocus();
+					},20);
+					
+				}
+				imgUl.style.left = num*imgList[0].offsetWidth + "px";
+				
+				setFocus();
+			}
+			
+			bnext.onclick = function(){
+				num--;
+				setFocus();
+				if(num < -imgList.length+1){
+					num = 0;
+					imgUl.style.transition = "none";
+					setTimeout(function(){
+						num = -1;
+						imgUl.style.transition = "1s";
+						imgUl.style.left = num*imgList[0].offsetWidth + "px";
+						setFocus();
+					},20);
+					
+				}
+				
+				imgUl.style.left = num*imgList[0].offsetWidth + "px";
+			}
+			
+			
+			
+			function setFocus(){
+				for(var j=0; j<focusList.length; j++){
+					focusList[j].className = "";
+				}
+				if(num>=-focusList.length){
+					//console.log(focusList[-num],-num%focusList.length);
+					focusList[-num%focusList.length].className = "active";
+				}
+			}
+		</script>
+	</body>
+</html>
