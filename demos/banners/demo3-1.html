@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>使用position属性做出来的banner(无缝轮播图1)</title>
+		<title>使用position属性做出来的banner(无缝轮播图2)</title>
 		<style type="text/css">
 			body{
 				overflow: hidden;
@@ -68,14 +68,25 @@
 				position: absolute;
 				top: 0;
 				left: 0;
-				width: 2250px;
+				width: 100%;
+				height: 100%;
+			}
+			#imgList li{
+				position: absolute;
+				top: 0;
+				left: -450px;
+				width: 100%;
 				height: 100%;
 				transition: 1s;
 			}
-			#imgList li{
-				float: left;
-				width: 450px;
-				height: 100%;
+			#imgList .prevActive{
+				left: -450px;
+			}
+			#imgList .nowActive{
+				left: 0;
+			}
+			#imgList .nextActive{
+				left: 450px;
 			}
 			#imgList li img{
 				width:100%;
@@ -107,14 +118,14 @@
 	</head>
 	<body>
 		<div class="banner">
-			<h2>使用position属性做出来的banner(无缝轮播图1)</h2>
+			<h2>使用position属性做出来的banner(无缝轮播图2)</h2>
 			<div class="container">
 				<div class="btn">
 					<a id="bprev" href="javascript:;">&lt;</a>
 					<a id="bnext" href="javascript:;">&gt;</a>
 				</div>
 				<ul id="imgList">
-					<li>
+					<li class="nowActive">
 						<a href="javascript:;">
 							<img src="img/1.png" alt="" />
 						</a>
@@ -134,11 +145,6 @@
 							<img src="img/4.png" alt="" />
 						</a>
 					</li>
-					<li>
-						<a href="javascript:;">
-							<img src="img/1.png" alt="" />
-						</a>
-					</li>
 				</ul>
 				<div id="focusList">
 					<span class="active"></span>
@@ -155,50 +161,118 @@
 			var imgList = imgUl.getElementsByTagName("li");
 			var focusList = document.getElementById("focusList").getElementsByTagName("span");
 			var num = 0;
+			var onOff = true;
 			
 			//点击后，向上切换
 			bprev.onclick = function(){
-				num++;
-				if(num > 0){
-					num = -imgList.length+1;
-					imgUl.style.transition = "none";
-					
-					setTimeout(function(){
-						num = -imgList.length+2;
-						imgUl.style.transition = "1s";
-						imgUl.style.left = num*imgList[0].offsetWidth + "px";
-						setFocus();
-					},20);
+				if(onOff){
+					onOff = !onOff;
+				}else{
+					return;
 				}
-				imgUl.style.left = num*imgList[0].offsetWidth + "px";
 				
-				setFocus();
+				if(num==0){
+					imgList[imgList.length-1].style.transition = "none";
+					imgList[imgList.length-1].className = "nextActive";
+				}
+				
+				setTimeout(function(){
+					imgList[num].style.transition = "1s";
+					imgList[num].className = "prevActive";
+					num--;
+					
+					if(num<0){
+						num = imgList.length-1;
+					}
+					
+					setFocus();
+					
+					imgList[num].style.transition = "1s";
+					imgList[num].className = "nowActive";
+				},20);
+				setTimeout(function(){
+					if(num>=1){
+						imgList[num-1].style.transition = "none";
+						imgList[num-1].className = "nextActive";
+ 					}else if(num==0){
+						imgList[imgList.length-1].style.transition = "none";
+						imgList[imgList.length-1].className = "nextActive";
+					}
+					onOff = !onOff;
+				
+				},1000);
 			}
 			
 			//点击后，向下切换
 			bnext.onclick = function(){
-				num--;
-				setFocus();
-				if(num < -imgList.length+1){
-					num = 0;
-					imgUl.style.transition = "none";
-					setTimeout(function(){
-						num = -1;
-						imgUl.style.transition = "1s";
-						imgUl.style.left = num*imgList[0].offsetWidth + "px";
-						setFocus();
-					},20);
+				if(onOff){
+					onOff = !onOff;
+				}else{
+					return;
 				}
-				imgUl.style.left = num*imgList[0].offsetWidth + "px";
+				imgList[num].style.transition = "1s";
+				imgList[num].className = "nextActive";
+				num++;
+				
+				if(num>=imgList.length){
+					num = 0;
+				}
+				imgList[num].style.transition = "1s";
+				imgList[num].className = "nowActive";
+				
+				setFocus();
+				
+				setTimeout(function(){
+					if(num>=2){
+						imgList[num-2].style.transition = "none";
+						imgList[num-2].className = "prevActive";
+						
+					}else if(num==1){
+						imgList[imgList.length-1].style.transition = "none";
+						imgList[imgList.length-1].className = "prevActive";
+					}else if(num==0){
+						imgList[imgList.length-2].style.transition = "none";
+						imgList[imgList.length-2].className = "prevActive";
+					}
+					onOff = !onOff;
+				},1000);
+				
 			}
 			
 			//点击焦点切换到对应图片
 			for(var i=0; i<focusList.length; i++){
 				focusList[i].index = i;
 				focusList[i].onclick = function(){
-					num = -this.index;
-					imgUl.style.left = num*imgList[0].offsetWidth + "px";
-					//console.log(num);
+					//console.log(this.index,imgList[this.index]);
+					for(var m=0; m<imgList.length; m++){
+						imgList[m].className == ""
+						
+					}
+					num = this.index;
+					imgList[num].style.zIndex = '1';
+					setTimeout(function(){
+						imgList[num].className = 'nowActive';
+					},10);   
+					setTimeout(function(){
+						if(num==0){
+							imgList[imgList.length-1].style.transition = "none";
+							imgList[imgList.length-1].className = "prevActive";
+							imgList[1].style.transition = "none";
+							imgList[1].className = "nextActive";
+						}else if(num==imgList.length-1){
+							imgList[0].style.transition = "none";
+							imgList[0].className = "prevActive";
+							imgList[num-1].style.transition = "none";
+							imgList[num-1].className = "nextActive";
+						}else{
+							imgList[num+1].style.transition = "none";
+							imgList[num+1].className = "prevActive";
+							imgList[num-1].style.transition = "none";
+							imgList[num-1].className = "nextActive";
+						}
+						imgList[num].style.zIndex = '0';
+					},1000);
+					imgList[num].style.transition = "1s";
 					setFocus();
 				}
 			}
@@ -209,8 +283,8 @@
 					focusList[j].className = "";
 				}
 				if(num>=-focusList.length){
-					//console.log(focusList[-num],-num%focusList.length);
-					focusList[-num%focusList.length].className = "active";
+					//console.log(num);
+					focusList[num].className = "active";
 				}
 			}
 		</script>

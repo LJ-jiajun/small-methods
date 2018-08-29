@@ -148,32 +148,41 @@
 			
 			imgList[num].style.opacity = "1";
 			
-			bnext.onclick = function(){
-				imgList[num].style.opacity = "0";
-				num++;
-				if(num>=imgList.length){
-					num = 0;
-				}
-				imgList[num].style.opacity = "1";
-				setFocus();
-			}
-			
+			//点击后，向上切换
 			bprev.onclick = function(){
-				imgList[num].style.opacity = "0";
 				num--;
 				if(num<0){
 					num = imgList.length-1;
 				}
-				
-				imgList[num].style.opacity = "1";
 				setFocus();
 			}
 			
+			//点击后，向下切换
+			bnext.onclick = function(){
+				num++;
+				if(num>=imgList.length){
+					num = 0;
+				}
+				setFocus();
+			}
+			
+			//点击焦点切换到对应图片
+			for(var i=0; i<focusList.length; i++){
+				focusList[i].index = i;
+				focusList[i].onclick = function(){
+					num = this.index;
+					setFocus();
+				}
+			}
+			
+			//让焦点跟随图片
 			function setFocus(){
 				for(var j=0; j<focusList.length; j++){
 					focusList[j].className = "";
+					imgList[j].style.opacity = "0";
 				}
 				focusList[num].className = "active";
+				imgList[num].style.opacity = "1";
 			}
 		</script>
 	</body>
