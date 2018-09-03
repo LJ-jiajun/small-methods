@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>banner</title>
+		<link rel="stylesheet" type="text/css" href="css/banner.css"/>
+		<script type="text/javascript" src="js/move.js" ></script>
+	</head>
+	<body>
+		<div class="banner">
+			<div class="prev" id="prev"><span class="pic"></span></div>
+			<div class="next" id="next"><span class="pic"></span></div>
+			<div class="container"></div>
+			<ul id="list">
+				<li class="li1"><a href="javascript:;"><img src="img/1.jpg" alt=""/></a></li>
+				<li class="li2"><a href="javascript:;"><img src="img/2.jpg" alt=""/></a></li>
+				<li class="li3"><a href="javascript:;"><img src="img/3.jpg" alt=""/></a></li>
+				<li class="li4"><a href="javascript:;"><img src="img/4.jpg" alt=""/></a></li>
+				<li class="li5"><a href="javascript:;"><img src="img/5.jpg" alt=""/></a></li>
+				<li class="li6"><a href="javascript:;"><img src="img/6.jpg" alt=""/></a></li>
+				<li class="li7"><a href="javascript:;"><img src="img/7.jpg" alt=""/></a></li>
+				<li class="li8"><a href="javascript:;"><img src="img/8.jpg" alt=""/></a></li>
+			</ul>
+		</div>
+		<script type="text/javascript">
+			var prev = $("#prev");
+			var next = $("#next");
+			var lis = $("li",$("#list"));
+			var banner = $(".banner")[0];
+			var timer = null;
+			var arr = [];
+			var onOff = true;
+			
+			for(var i=0;i<lis.length;i++){
+				arr[i] = {
+					left: getCSS(lis[i],"left"),
+					top: getCSS(lis[i],"top"),
+					width: getCSS(lis[i],"width"),
+					height: getCSS(lis[i],"height"),
+					opacity: getCSS(lis[i],"opacity"),
+					zIndex: getCSS(lis[i],"z-index")
+				};
+			}
+			
+			prev.onclick = prevFn;
+			next.onclick = nextFn;
+			
+			timer = setInterval(nextFn,3000);
+			
+			banner.onmouseenter = function(){
+				clearInterval(timer);
+				prev.style.display = "block";
+				next.style.display = "block";
+			}
+			banner.onmouseleave = function(){
+				timer = setInterval(nextFn,3000);
+				prev.style.display = "none";
+				next.style.display = "none";
+			}
+			
+			function nextFn(){
+				if(onOff){
+					onOff = !onOff;
+				}else{
+					return;
+				}
+				
+				setTimeout(function(){
+					arr.unshift(arr.pop());
+				
+					for(var i=0;i<arr.length;i++){
+						moreMove(lis[i],{
+							left: arr[i].left,
+							top: arr[i].top,
+							width: arr[i].width,
+							height: arr[i].height,
+							opacity: arr[i].opacity
+						},1000,"linear");
+						lis[i].style.zIndex = arr[i].zIndex;
+					}
+					onOff = !onOff;
+				},1000)
+			}
+			
+			function prevFn(){
+				if(onOff){
+					onOff = !onOff;
+				}else{
+					return;
+				}
+				
+				setTimeout(function(){
+					arr.push(arr.shift());
+				
+					for(var i=0;i<arr.length;i++){
+						moreMove(lis[i],{
+							left: arr[i].left,
+							top: arr[i].top,
+							width: arr[i].width,
+							height: arr[i].height,
+							opacity: arr[i].opacity
+						},1000,"linear");
+						lis[i].style.zIndex = arr[i].zIndex;
+					}
+					onOff = !onOff;
+				},1000)
+			}
+		</script>
+	</body>
+</html>
