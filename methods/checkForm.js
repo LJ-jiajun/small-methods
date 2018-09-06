@@ -30,8 +30,8 @@ function checkPassword(pwd){
 }
 
 //验证确认密码，以字母开头，长度在6~18之间，只能包含字母、数字和下划线
-function checkRepassword(pwd){
-	var repwd = document.getElementById("repassword").val();
+function checkRepassword(repwd){
+	var pwd = document.getElementById("password").val();
 	
 	if(repwd == "")){
 		alert("确认密码不能为空！");
@@ -135,6 +135,36 @@ function checkZipcode(Zipcode){
 	}
 }
 
+//验证验证码
+function checkCode(code){
+	//正则表达式，匹配验证码(4位数)
+	var Reg=/^[A-Za-z]{4}$/; 
+	if(code == "")){ 
+		alert("验证码不能为空！");
+		return false; 
+	}else if(!Reg.test(code)){ 
+		alert("请输入正确格式的验证码！");
+		return false; 
+	}else{
+		return true;
+	}
+}
+
+//验证短信验证码
+function checkMsgCode(msgCode){
+	//正则表达式，匹配短信验证码
+	var Reg=/^\d{4}$/; 
+	if(msgCode == "")){ 
+		alert("短信验证码不能为空！");
+		return false; 
+	}else if(!Reg.test(msgCode)){ 
+		alert("请输入正确格式的短信验证码！");
+		return false; 
+	}else{
+		return true;
+	}
+}
+
 /*
  * 常用的正则表达式:
  
@@ -149,6 +179,7 @@ function checkZipcode(Zipcode){
  	n位的数字：^\d{n}$
  	至少n位的数字：^\d{n,}$
  	m-n位的数字：^\d{m,n}$
+ 	由26个英文字母组成的字符串：^[A-Za-z]+$
  	长度为3-20的所有字符：^.{3,20}$
  	由数字和26个英文字母组成的字符串：^[A-Za-z0-9]+$
  	由数字、26个英文字母或者下划线组成的字符串：^\w+$ 或 ^\w{3,20}$
