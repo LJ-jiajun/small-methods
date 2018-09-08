@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <title>花亭湖徽菜</title>
+    <link rel="stylesheet" type="text/css" href="css/index.css"/>
+    <script src="https://static.adnonstop.com/www/pc/js/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js" type="text/javascript"></script> 
+    <script type="text/javascript">
+    	
+   		document.addEventListener('plusready', function(){
+   			//console.log("所有plus api都应该在此事件发生后调用，否则会出现plus is undefined。"
+   			
+   		});
+   		
+   		//--创建页面监听，等待微信端页面加载完毕 触发音频播放
+//		document.addEventListener('DOMContentLoaded',function(){
+//		    function audioAutoPlay() {
+//		        var audio = document.getElementById('audio');
+//		        console.log(audio);
+//		        audio.play();
+//		        document.addEventListener("WeixinJSBridgeReady", function(){
+//		            audio.play();
+//		        },false);
+//		    }
+//		    audioAutoPlay();
+//		});
+//		//--创建触摸监听，当浏览器打开页面时，触摸屏幕触发事件，进行音频播放
+//		document.addEventListener('touchstart', function () {
+//		    function audioAutoPlay() {
+//		        var audio = document.getElementById('audio');
+//		            audio.play();
+//		    }
+//		    audioAutoPlay();
+//		});
+   		
+    </script>
+</head>
+<body>
+	 <div class="container">
+	 	<div class="page current">
+	 		<h2>花亭湖徽菜</h2>
+	 		<h3><!-- 中国健康徽菜--></h3>
+	 		<div class="logo">
+	 			<img src="img/logo.jpg" alt="" />
+	 		</div>
+	 		<div class="ps">
+	 			<p>京城正宗地道徽菜馆</p>
+	 			<p>专注烹饪中国健康徽菜</p>
+	 		</div>
+	 	</div>
+		<a href="javascript:;" id="play">play</a>
+	 </div>
+	<audio loop src="audio/Cherryhill.mp3" id="audio" autoplay="autoplay"></audio>
+</body>
+	<script type="text/javascript" src="js/common.js" ></script>
+	<script type="text/javascript" src="js/index.js" ></script>
+</html>

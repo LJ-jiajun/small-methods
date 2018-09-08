@@ -1,0 +1,42 @@
+html,body,div,p,h1,h2,h3,h4,h5,h6,ul,li,input,textarea,th,td{
+	margin:0;padding:0;
+}
+html{
+	font-size: 20px;
+	color:#000;
+	background:#fff;
+}
+li{
+	list-style: none;
+}
+h1,h2,h3,h4,h5,h6{
+	font-weight: 400;
+}
+a{
+	text-decoration: none;
+}
+i,em{
+	font-style: normal;
+}
+.container{
+	position: relative;
+	width: 100%;
+	max-width: 21.25rem;
+	-height: 37.8rem;
+	height: auto;
+	margin: 0 auto;
+	overflow: hidden;
+}
+.container .page{
+	width: 100%;
+	height: auto;
+	overflow: hidden;
+}
+
+#play{
+	position: absolute;
+	top: 1rem;
+	right: 1rem;
+	font-size: 0.6rem;
+	color: salmon;
+}
