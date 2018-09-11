@@ -1,4 +1,4 @@
-//获得不同的速度曲线
+﻿//获得不同的速度曲线
 var Tween = {
 	linear: function (t, b, c, d){
 		return c*t/d + b;
@@ -128,6 +128,7 @@ var Tween = {
 		return Tween['bounceOut'](t*2-d, 0, c, d) * 0.5 + c*0.5 + b;
 	}
 };
+
 
 //让一个元素的以多个样式运动
 function moreMove(obj,attrs,time,type){
