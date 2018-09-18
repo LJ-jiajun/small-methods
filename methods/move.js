@@ -255,3 +255,49 @@ function $(name,parent){
 		return parent.getElementsByTagName(name);
 	}
 }
+
+//去掉字符串的首尾空格
+function trim(str){
+	return str.replace(/^\s+|\s+$/g,"");
+}
+
+//给元素新增一个class
+function addClass(obj,className){
+	if(obj.className){
+		if(obj.className.indexOf(className) == -1){
+			obj.className += " "+className;
+		}else{
+			return;
+		}
+	}else{
+		obj.className = className;
+	}
+}
+
+//删除元素的一个class
+function removeClass(obj,className){
+	var zz = new RegExp(className);
+	if(obj.className){
+		if(obj.className.indexOf(className) == -1){
+			return;
+		}else{
+			console.log(zz,obj.className);
+			obj.className = trim(obj.className.replace(zz,""));
+		}
+	}else{
+		return;
+	}
+}
+
+//如果元素没有这个class就新增，有了就删除
+function toggleClass(obj,className){
+	if(obj.className){
+		if(obj.className.indexOf(className) == -1){
+			addClass(obj,className);
+		}else{
+			removeClass(obj,className);
+		}
+	}else{
+		obj.className = className;
+	}
+}
