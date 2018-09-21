@@ -1,61 +1,106 @@
 
 (function(){
 	
-	window.ajax = function(type,url,data,fn,dataType){
+	
+	
+	window.ajax = function(method,url,data,fn,dataType){
+		
+		
 		// 创建ajax实例
-		var Ajax = new XMLHttpRequest();
+		var ajax = new XMLHttpRequest();
 		
-		if(typeof data == "object"){
-			var str = "";
-			for(var attr in data){
-				str += attr+"="+encodeURI(data[attr])+"&";
-			}
-			str = str.slice(0,-1);
+		if(method.toLowerCase() == 'post'){
+			ajax.open('post',url,true);
+			ajax.setRequestHeader("content-type","application/x-www-form-urlencoded");
+			ajax.send(data);
+			
+		}else if(method.toLowerCase() == 'get'){
+			ajax.open('get',url+'?'+data,true);
+			ajax.send();
+			
 		}
 		
-		if(type == "get"){
-			var getUrl = url+"?"+str;
-			
-			// 链接后台
-			Ajax.open('get',getUrl,true);
-			
-			// 发送信息
-			Ajax.send();
-			
-		}else if(type == "post"){
-			// 链接后台
-			Ajax.open('post',url,true);
-			
-			// 当用post传送数据时，必须设置请求头
-			Ajax.setRequestHeader("content-type","application/x-www-form-urlencoded");
-			
-			// 发送信息
-			Ajax.send(str);
-		}
-		
-		// 等待接通的一个事件
-		Ajax.onreadystatechange = function(){
-			// 接收后台反馈的信息
-			if(Ajax.readyState == 4){
-				if(Ajax.status>=200&&Ajax.status<=207){
-					if(typeof fn == "function"){
-						fn(Ajax.responseText);
+		ajax.onreadystatechange = function(){
+			// 判断ajax步骤是否完成
+			if(ajax.readyState == 4){
+				// 判断后台给的反馈信息
+				if(ajax.status>=200&&ajax.status<=207){
+					if(dataType == 'json'){
+						var json = (new Function('','return'+ajax.responseText))();
+						fn(json);
+					}else if(dataType == 'xml'){
+						//fn(ajax.responseText);
+						//console.log(ajax.responseXML)
+						fn(ajax.responseXML)
+					}else{
+						fn(ajax.responseText);
 					}
+					
+				}else{
+					alert('错误是:'+ajax.status)
 				}
-			}
-		}
+			}	
+		}		
 	}
 	
-	/*
-	 * type:ajax传输方式
-	 * url:目标地址
-	 * data:传输的数据
-	 * success:成功的函数
-	 * failure:失败的函数
-	 * dataType:数据类型
-	 */
+	window.$_ajax = function(obj){
+		
+		// 创建ajax实例
+		var ajax = new XMLHttpRequest();
+		var opation = {
+			type: obj.type||'get',
+			url:obj.url,
+			data:obj.data,
+			success:obj.success,
+			erorr:obj.erorr||function(){
+				console.log('错误是'+ajax.status)
+			},
+			ansys:(obj.ansys=== false)?false:true,
+			dataType:obj.dataType||''
+		}
+		
+		var str = '';
+		if(opation.data){
+			for(var attr in opation.data){
+					str += attr+'='+opation.data[attr]+'&';
+			}
+		}
+		if(opation.type.toLowerCase() == 'post'){
+			ajax.open('post',opation.url,opation.ansys);
+			ajax.setRequestHeader("content-type","application/x-www-form-urlencoded");
+			ajax.send(str);
+			
+		}else if(opation.type.toLowerCase() == 'get'){
+			if(opation.data){
+				ajax.open('get',opation.url+'?'+str,true);
+			}else{
+				ajax.open('get',opation.url,true);
+			}
+			ajax.send();
+		}
+		
+		ajax.onreadystatechange = function(){
+			// 判断ajax步骤是否完成
+			if(ajax.readyState == 4){
+				// 判断后台给的反馈信息
+				if(ajax.status>=200&&ajax.status<=207){
+					if(opation.dataType == 'json'){
+						var json = (new Function('','return'+ajax.responseText))();
+						opation.success(json);
+					}else if(opation.dataType == 'xml'){
+						opation.success(ajax.responseXML);
+					}else{
+						opation.success(ajax.responseText);
+					}	
+				}else{
+					opation.erorr();
+				}
+			}	
+		}	
+		
+	}
 	
 })()
 
-		
-		
+
+
