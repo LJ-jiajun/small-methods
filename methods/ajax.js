@@ -5,7 +5,6 @@
 	
 	window.ajax = function(method,url,data,fn,dataType){
 		
-		
 		// 创建ajax实例
 		var ajax = new XMLHttpRequest();
 		
@@ -13,11 +12,9 @@
 			ajax.open('post',url,true);
 			ajax.setRequestHeader("content-type","application/x-www-form-urlencoded");
 			ajax.send(data);
-			
 		}else if(method.toLowerCase() == 'get'){
 			ajax.open('get',url+'?'+data,true);
 			ajax.send();
-			
 		}
 		
 		ajax.onreadystatechange = function(){
