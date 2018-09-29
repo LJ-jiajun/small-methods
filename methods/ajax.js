@@ -12,7 +12,6 @@
 			}
 			str = str.slice(0,-1);
 		}
-		
 		if(type == "get"){
 			var getUrl = url+"?"+str;
 			
